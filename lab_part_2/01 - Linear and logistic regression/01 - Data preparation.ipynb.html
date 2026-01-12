@@ -1,0 +1,1124 @@
+
+<!-- saved from url=(0107)https://moodle.wne.uw.edu.pl/pluginfile.php/130215/mod_resource/content/1/01%20-%20Data%20preparation.ipynb -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body data-new-gr-c-s-check-loaded="14.1050.0" data-gr-ext-installed="">{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "%matplotlib inline"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Lets import medical_care data:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "(35072, 29)\n"
+     ]
+    }
+   ],
+   "source": [
+    "medical = pd.read_csv(\"data/medical_care.csv\")\n",
+    "print(medical.shape)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The file includes socio-demographic data, including health insurance and various aspects of health care touchpoints for the respondent group of a survey conducted in the USA.\n",
+    "\n",
+    "The collection includes 35072 observations and 27 variables:\n",
+    " \n",
+    "* UMARSTAT – Marital status recode\n",
+    "* UCUREMP – Currently has employer coverage\n",
+    "* UCURNINS – Currently uninsured\n",
+    "* USATMED – Satisfied with quality of medical care\n",
+    "* URELATE – Number of relatives in household\n",
+    "* REGION – region\n",
+    "* STATE - state\n",
+    "* HHID – Household identification number\n",
+    "* FHOSP – In hospital overnight last year\n",
+    "* FDENT – Dental visits last year\n",
+    "* FEMER – Number of emergency room visits last year\n",
+    "* FDOCT – Number of doctor visits last year\n",
+    "* UIMMSTAT – Immigration status\n",
+    "* U_USBORN – U.S.- or foreign-born\n",
+    "* UAGE – Age topcoded\n",
+    "* U_FTPT – Full-time or part-time worker this year\n",
+    "* U_WKSLY – Weeks worked last year\n",
+    "* U_HRSLY – Hours worked per week last year\n",
+    "* U_USHRS – Hours worked per week this year\n",
+    "* HEARNVAL – Earnings amount last year - Household\n",
+    "* HOTHVAL – Household income, total exc. earnings\n",
+    "* HRETVAL – Retirement amount – Household\n",
+    "* HSSVAL – Social Security amount - Household\n",
+    "* HWSVAL – Wages and salaries amount – Household\n",
+    "* UBRACE – race\n",
+    "* GENDER – gender\n",
+    "* UEDUC3 – education level\n",
+    "* CEYES - color of eyes\n",
+    "* CHAIR - color of hair"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Lets see how the datasets looks like:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped="">\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "\n",
+       "  \n",
+       "    \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "    \n",
+       "  \n",
+       "  \n",
+       "    \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "    \n",
+       "    \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "    \n",
+       "    \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "    \n",
+       "    \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "    \n",
+       "    \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "    \n",
+       "  \n",
+       "<table border="\&quot;1\&quot;" class="\&quot;dataframe\&quot;"><thead><tr style="\&quot;text-align:" right;\"=""><th></th><th>UMARSTAT</th><th>UCUREMP</th><th>UCURNINS</th><th>USATMED</th><th>URELATE</th><th>REGION</th><th>STATE</th><th>HHID</th><th>FHOSP</th><th>FDENT</th><th>FEMER</th><th>FDOCT</th><th>UIMMSTAT</th><th>U_USBORN</th><th>UAGE</th><th>U_FTPT</th><th>U_WKSLY</th><th>U_HRSLY</th><th>U_USHRS</th><th>HEARNVAL</th><th>HOTHVAL</th><th>HRETVAL</th><th>HSSVAL</th><th>HWSVAL</th><th>UBRACE</th><th>GENDER</th><th>UEDUC3</th><th>CEYES</th><th>CHAIR</th></tr></thead><tbody><tr><th>0</th><td>Never married</td><td>No</td><td>Yes</td><td>Very satisfied</td><td>2</td><td>Midwest</td><td>WI</td><td>55616128</td><td>No</td><td>0</td><td>0</td><td>0</td><td>US-born citizen</td><td>Yes</td><td>22</td><td>Full-time</td><td>52.0</td><td>40</td><td>40</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>White</td><td>Female</td><td>No HS diploma or GED</td><td>hazel</td><td>brown</td></tr><tr><th>1</th><td>Separated</td><td>Yes</td><td>No</td><td>Very satisfied</td><td>2</td><td>Midwest</td><td>WI</td><td>54704000</td><td>No</td><td>2</td><td>0</td><td>0</td><td>US-born citizen</td><td>Yes</td><td>30</td><td>Full-time</td><td>52.0</td><td>40</td><td>40</td><td>31468</td><td>5950</td><td>0</td><td>0</td><td>31468</td><td>White</td><td>Female</td><td>HS diploma or GED, no bachelor's degree</td><td>blue</td><td>black</td></tr><tr><th>2</th><td>Married_live together</td><td>No</td><td>No</td><td>Very satisfied</td><td>5</td><td>Midwest</td><td>WI</td><td>57874272</td><td>No</td><td>0</td><td>1</td><td>0</td><td>US-born citizen</td><td>Yes</td><td>33</td><td>Part-time</td><td>52.0</td><td>30</td><td>30</td><td>24700</td><td>11340</td><td>0</td><td>4920</td><td>24700</td><td>White</td><td>Male</td><td>No HS diploma or GED</td><td>brown</td><td>brown</td></tr><tr><th>3</th><td>Divorced</td><td>No</td><td>Yes</td><td>Little dissatisfied</td><td>4</td><td>Midwest</td><td>WI</td><td>54106816</td><td>No</td><td>0</td><td>0</td><td>1</td><td>US-born citizen</td><td>Yes</td><td>41</td><td>Part-time</td><td>43.0</td><td>40</td><td>25</td><td>60000</td><td>39002</td><td>0</td><td>0</td><td>60000</td><td>Black</td><td>Female</td><td>No HS diploma or GED</td><td>brown</td><td>black</td></tr><tr><th>4</th><td>Never married</td><td>Yes</td><td>No</td><td>Very satisfied</td><td>0</td><td>Midwest</td><td>WI</td><td>54569152</td><td>No</td><td>2</td><td>0</td><td>0</td><td>US-born citizen</td><td>Yes</td><td>34</td><td>Full-time</td><td>52.0</td><td>40</td><td>40</td><td>55280</td><td>4200</td><td>0</td><td>0</td><td>55280</td><td>Black</td><td>Male</td><td>HS diploma or GED, no bachelor's degree</td><td>brown</td><td>black</td></tr></tbody></table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                UMARSTAT UCUREMP UCURNINS              USATMED  URELATE  \\\n",
+       "0          Never married      No      Yes       Very satisfied        2   \n",
+       "1              Separated     Yes       No       Very satisfied        2   \n",
+       "2  Married_live together      No       No       Very satisfied        5   \n",
+       "3               Divorced      No      Yes  Little dissatisfied        4   \n",
+       "4          Never married     Yes       No       Very satisfied        0   \n",
+       "\n",
+       "    REGION STATE      HHID FHOSP  FDENT  FEMER  FDOCT         UIMMSTAT  \\\n",
+       "0  Midwest    WI  55616128    No      0      0      0  US-born citizen   \n",
+       "1  Midwest    WI  54704000    No      2      0      0  US-born citizen   \n",
+       "2  Midwest    WI  57874272    No      0      1      0  US-born citizen   \n",
+       "3  Midwest    WI  54106816    No      0      0      1  US-born citizen   \n",
+       "4  Midwest    WI  54569152    No      2      0      0  US-born citizen   \n",
+       "\n",
+       "  U_USBORN  UAGE     U_FTPT  U_WKSLY  U_HRSLY  U_USHRS  HEARNVAL  HOTHVAL  \\\n",
+       "0      Yes    22  Full-time     52.0       40       40         0        0   \n",
+       "1      Yes    30  Full-time     52.0       40       40     31468     5950   \n",
+       "2      Yes    33  Part-time     52.0       30       30     24700    11340   \n",
+       "3      Yes    41  Part-time     43.0       40       25     60000    39002   \n",
+       "4      Yes    34  Full-time     52.0       40       40     55280     4200   \n",
+       "\n",
+       "   HRETVAL  HSSVAL  HWSVAL UBRACE  GENDER  \\\n",
+       "0        0       0       0  White  Female   \n",
+       "1        0       0   31468  White  Female   \n",
+       "2        0    4920   24700  White    Male   \n",
+       "3        0       0   60000  Black  Female   \n",
+       "4        0       0   55280  Black    Male   \n",
+       "\n",
+       "                                    UEDUC3  CEYES  CHAIR  \n",
+       "0                     No HS diploma or GED  hazel  brown  \n",
+       "1  HS diploma or GED, no bachelor's degree   blue  black  \n",
+       "2                     No HS diploma or GED  brown  brown  \n",
+       "3                     No HS diploma or GED  brown  black  \n",
+       "4  HS diploma or GED, no bachelor's degree  brown  black  "
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Increade max number of columns to display for this dataset.\n",
+    "pd.set_option(\"display.max_columns\",50)\n",
+    "medical.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Lets see what are datatypes for all the variables.\n",
+    "\n",
+    "It looks as if we made one mistake. HHID is an identification number. Therefore we should import is as a string and not as an int. Importing IDs as ints can be risky as leading zeros get trancuated at reading. All other qualitative variables are already typed as object."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "UMARSTAT     object\n",
+       "UCUREMP      object\n",
+       "UCURNINS     object\n",
+       "USATMED      object\n",
+       "URELATE       int64\n",
+       "REGION       object\n",
+       "STATE        object\n",
+       "HHID          int64\n",
+       "FHOSP        object\n",
+       "FDENT         int64\n",
+       "FEMER         int64\n",
+       "FDOCT         int64\n",
+       "UIMMSTAT     object\n",
+       "U_USBORN     object\n",
+       "UAGE          int64\n",
+       "U_FTPT       object\n",
+       "U_WKSLY     float64\n",
+       "U_HRSLY       int64\n",
+       "U_USHRS       int64\n",
+       "HEARNVAL      int64\n",
+       "HOTHVAL       int64\n",
+       "HRETVAL       int64\n",
+       "HSSVAL        int64\n",
+       "HWSVAL        int64\n",
+       "UBRACE       object\n",
+       "GENDER       object\n",
+       "UEDUC3       object\n",
+       "CEYES        object\n",
+       "CHAIR        object\n",
+       "dtype: object"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "medical.dtypes"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Reloading medical dataset with predefined set for HHID as str."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "UMARSTAT     object\n",
+       "UCUREMP      object\n",
+       "UCURNINS     object\n",
+       "USATMED      object\n",
+       "URELATE       int64\n",
+       "REGION       object\n",
+       "STATE        object\n",
+       "HHID         object\n",
+       "FHOSP        object\n",
+       "FDENT         int64\n",
+       "FEMER         int64\n",
+       "FDOCT         int64\n",
+       "UIMMSTAT     object\n",
+       "U_USBORN     object\n",
+       "UAGE          int64\n",
+       "U_FTPT       object\n",
+       "U_WKSLY     float64\n",
+       "U_HRSLY       int64\n",
+       "U_USHRS       int64\n",
+       "HEARNVAL      int64\n",
+       "HOTHVAL       int64\n",
+       "HRETVAL       int64\n",
+       "HSSVAL        int64\n",
+       "HWSVAL        int64\n",
+       "UBRACE       object\n",
+       "GENDER       object\n",
+       "UEDUC3       object\n",
+       "CEYES        object\n",
+       "CHAIR        object\n",
+       "dtype: object"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "medical = pd.read_csv(\"data/medical_care.csv\", dtype={\"HHID\":str})\n",
+    "medical.dtypes"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Some variables are not numeric but qualitative. in some cases they are nominal (for example REGION) and in other ordinal (USATMED). Depending on the library and algorithm we may need to transform those variables.\n",
+    "\n",
+    "We may need to:\n",
+    "* create ordered numerical labels\n",
+    "* unordered numerical labels\n",
+    "* do one hot encoding (binarization)\n",
+    "\n",
+    "There are many ways to do all abovementioned actions. Lets see some examples starting with USATMED. We see that there are 5 unique levels. We can create a dictionary to map the variable."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "['Very satisfied' 'Little dissatisfied' 'Little satisfied' 'No opinion'\n",
+      " 'Very dissatisfied']\n",
+      "Very satisfied         18002\n",
+      "Little satisfied       12636\n",
+      "Little dissatisfied     2470\n",
+      "Very dissatisfied       1091\n",
+      "No opinion               873\n",
+      "Name: USATMED, dtype: int64\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(medical.USATMED.unique())\n",
+    "print(medical.USATMED.value_counts())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "satDict = {'Very satisfied':4,  'Little satisfied':3,\n",
+    "       'No opinion':2,'Little dissatisfied':1, 'Very dissatisfied':0}"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[4 1 3 2 0]\n",
+      "4    18002\n",
+      "3    12636\n",
+      "1     2470\n",
+      "0     1091\n",
+      "2      873\n",
+      "Name: USATMED, dtype: int64\n"
+     ]
+    }
+   ],
+   "source": [
+    "medical[\"USATMED\"]=medical.USATMED.map(satDict)\n",
+    "print(medical.USATMED.unique())\n",
+    "print(medical.USATMED.value_counts())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Lets do the same with education"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "['No HS diploma or GED' \"HS diploma or GED, no bachelor's degree\"\n",
+      " \"Bachelor's degree and higher\"]\n",
+      "HS diploma or GED, no bachelor's degree    20896\n",
+      "Bachelor's degree and higher               10322\n",
+      "No HS diploma or GED                        3854\n",
+      "Name: UEDUC3, dtype: int64\n",
+      "[0 1 2]\n",
+      "1    20896\n",
+      "2    10322\n",
+      "0     3854\n",
+      "Name: UEDUC3, dtype: int64\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(medical.UEDUC3.unique())\n",
+    "print(medical.UEDUC3.value_counts())\n",
+    "eduDict = {'No HS diploma or GED':0, \"HS diploma or GED, no bachelor's degree\":1,\n",
+    " \"Bachelor's degree and higher\":2}\n",
+    "medical[\"UEDUC3\"]=medical.UEDUC3.map(eduDict)\n",
+    "print(medical.UEDUC3.unique())\n",
+    "print(medical.UEDUC3.value_counts())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Lets change the type of the U_WKSLY to int."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "medical[\"U_WKSLY\"]=medical[\"U_WKSLY\"].astype(int)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Lets look at our data set. It look as if there are errors in HEARNVAL and HOTHVAL as we should not be seing negative values there."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped="">\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "\n",
+       "  \n",
+       "    \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "    \n",
+       "  \n",
+       "  \n",
+       "    \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "    \n",
+       "    \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "    \n",
+       "    \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "    \n",
+       "    \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "    \n",
+       "    \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "    \n",
+       "    \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "    \n",
+       "    \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "    \n",
+       "    \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "      \n",
+       "    \n",
+       "  \n",
+       "<table border="\&quot;1\&quot;" class="\&quot;dataframe\&quot;"><thead><tr style="\&quot;text-align:" right;\"=""><th></th><th>USATMED</th><th>URELATE</th><th>FDENT</th><th>FEMER</th><th>FDOCT</th><th>UAGE</th><th>U_WKSLY</th><th>U_HRSLY</th><th>U_USHRS</th><th>HEARNVAL</th><th>HOTHVAL</th><th>HRETVAL</th><th>HSSVAL</th><th>HWSVAL</th><th>UEDUC3</th></tr></thead><tbody><tr><th>count</th><td>35072.000000</td><td>35072.000000</td><td>35072.000000</td><td>35072.000000</td><td>35072.000000</td><td>35072.000000</td><td>35072.000000</td><td>35072.000000</td><td>35072.000000</td><td>35072.000000</td><td>35072.000000</td><td>35072.000000</td><td>35072.000000</td><td>35072.000000</td><td>35072.000000</td></tr><tr><th>mean</th><td>3.254220</td><td>2.288692</td><td>1.567262</td><td>0.331261</td><td>2.461280</td><td>39.435618</td><td>47.099510</td><td>41.270301</td><td>41.634552</td><td>39688.031621</td><td>7504.163321</td><td>1352.392935</td><td>2321.060761</td><td>37134.580748</td><td>1.184421</td></tr><tr><th>std</th><td>1.017474</td><td>1.520769</td><td>1.508148</td><td>0.795926</td><td>3.666897</td><td>11.302693</td><td>9.844522</td><td>13.153918</td><td>13.295147</td><td>57282.357668</td><td>16661.686112</td><td>6666.099716</td><td>5722.053708</td><td>54558.125077</td><td>0.608438</td></tr><tr><th>min</th><td>0.000000</td><td>0.000000</td><td>0.000000</td><td>0.000000</td><td>0.000000</td><td>17.000000</td><td>2.000000</td><td>1.000000</td><td>1.000000</td><td>-19998.000000</td><td>-16902.000000</td><td>0.000000</td><td>0.000000</td><td>0.000000</td><td>0.000000</td></tr><tr><th>25%</th><td>3.000000</td><td>1.000000</td><td>0.000000</td><td>0.000000</td><td>0.000000</td><td>31.000000</td><td>48.000000</td><td>38.000000</td><td>39.000000</td><td>0.000000</td><td>0.000000</td><td>0.000000</td><td>0.000000</td><td>0.000000</td><td>1.000000</td></tr><tr><th>50%</th><td>4.000000</td><td>2.000000</td><td>1.000000</td><td>0.000000</td><td>1.000000</td><td>40.000000</td><td>52.000000</td><td>40.000000</td><td>40.000000</td><td>24000.000000</td><td>485.000000</td><td>0.000000</td><td>0.000000</td><td>21000.000000</td><td>1.000000</td></tr><tr><th>75%</th><td>4.000000</td><td>3.000000</td><td>2.000000</td><td>0.000000</td><td>3.000000</td><td>47.000000</td><td>52.000000</td><td>48.000000</td><td>50.000000</td><td>60000.000000</td><td>8424.000000</td><td>0.000000</td><td>0.000000</td><td>56000.000000</td><td>2.000000</td></tr><tr><th>max</th><td>4.000000</td><td>14.000000</td><td>8.000000</td><td>5.000000</td><td>25.000000</td><td>82.000000</td><td>52.000000</td><td>126.000000</td><td>126.000000</td><td>687064.000000</td><td>315335.000000</td><td>149402.000000</td><td>100000.000000</td><td>687064.000000</td><td>2.000000</td></tr></tbody></table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "            USATMED       URELATE         FDENT         FEMER         FDOCT  \\\n",
+       "count  35072.000000  35072.000000  35072.000000  35072.000000  35072.000000   \n",
+       "mean       3.254220      2.288692      1.567262      0.331261      2.461280   \n",
+       "std        1.017474      1.520769      1.508148      0.795926      3.666897   \n",
+       "min        0.000000      0.000000      0.000000      0.000000      0.000000   \n",
+       "25%        3.000000      1.000000      0.000000      0.000000      0.000000   \n",
+       "50%        4.000000      2.000000      1.000000      0.000000      1.000000   \n",
+       "75%        4.000000      3.000000      2.000000      0.000000      3.000000   \n",
+       "max        4.000000     14.000000      8.000000      5.000000     25.000000   \n",
+       "\n",
+       "               UAGE       U_WKSLY       U_HRSLY       U_USHRS       HEARNVAL  \\\n",
+       "count  35072.000000  35072.000000  35072.000000  35072.000000   35072.000000   \n",
+       "mean      39.435618     47.099510     41.270301     41.634552   39688.031621   \n",
+       "std       11.302693      9.844522     13.153918     13.295147   57282.357668   \n",
+       "min       17.000000      2.000000      1.000000      1.000000  -19998.000000   \n",
+       "25%       31.000000     48.000000     38.000000     39.000000       0.000000   \n",
+       "50%       40.000000     52.000000     40.000000     40.000000   24000.000000   \n",
+       "75%       47.000000     52.000000     48.000000     50.000000   60000.000000   \n",
+       "max       82.000000     52.000000    126.000000    126.000000  687064.000000   \n",
+       "\n",
+       "             HOTHVAL        HRETVAL         HSSVAL         HWSVAL  \\\n",
+       "count   35072.000000   35072.000000   35072.000000   35072.000000   \n",
+       "mean     7504.163321    1352.392935    2321.060761   37134.580748   \n",
+       "std     16661.686112    6666.099716    5722.053708   54558.125077   \n",
+       "min    -16902.000000       0.000000       0.000000       0.000000   \n",
+       "25%         0.000000       0.000000       0.000000       0.000000   \n",
+       "50%       485.000000       0.000000       0.000000   21000.000000   \n",
+       "75%      8424.000000       0.000000       0.000000   56000.000000   \n",
+       "max    315335.000000  149402.000000  100000.000000  687064.000000   \n",
+       "\n",
+       "             UEDUC3  \n",
+       "count  35072.000000  \n",
+       "mean       1.184421  \n",
+       "std        0.608438  \n",
+       "min        0.000000  \n",
+       "25%        1.000000  \n",
+       "50%        1.000000  \n",
+       "75%        2.000000  \n",
+       "max        2.000000  "
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "medical.describe()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Lets look closer at those variables."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "(64, 29)\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "<matplotlib.axes._subplots.axessubplot at="" 0x7f453da32cc0="">"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "image/png": "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\nFQNDklTl/wMAQJztKfaGAgAAAABJRU5ErkJggg==\n",
+      "text/plain": [
+       "<matplotlib.figure.figure at="" 0x7f451518a630="">"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "print(medical.query(\"HEARNVAL&lt;0\").shape)\n",
+    "medical.HEARNVAL.hist(bins=100)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "(180, 29)\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "<matplotlib.axes._subplots.axessubplot at="" 0x7f453c974a58="">"
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAYcAAAD8CAYAAACcjGjIAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz\nAAALEgAACxIB0t1+/AAAEixJREFUeJzt3X+s3XV9x/Hne1SQgbNF3E1DyYpbk4XJhnADNTPmMrNS\n2B/FxBgIWTskdpmQadIllpmtTDTBZbgM5pA6G8vCRDY1bbSu6zpujH/woyhSflh7xRLaVBotP1Y1\n2+re++N8rvlyP+f23nvOueeHPB/Jyf2e9/dzvp/3+XJ6X/f7414iM5EkqemXBt2AJGn4GA6SpIrh\nIEmqGA6SpIrhIEmqGA6SpIrhIEmqGA6SpIrhIEmqLBl0A50699xzc+XKlX2f98c//jFnnXVW3+ft\nln33l333zyj2DIPr+7HHHvthZr55rnEjGw4rV65k3759fZ93cnKSiYmJvs/bLfvuL/vun1HsGQbX\nd0Q8N59xnlaSJFUMB0lSxXCQJFUMB0lSxXCQJFUMB0lSxXCQJFUMB0lSxXCQJFUMhwXaf+RlVm7+\nKis3f3XQrUjSojEcJEkVw0GSVDEcJEkVw0GSVDEcJEkVw0GSVDEcJEkVw0GSVDEcJEkVw0GSVDEc\nJEkVw0GSVJkzHCLi/Ih4MCKejoinIuKDpX5OROyJiIPl67JSj4i4MyKmIuKJiLiksa0NZfzBiNjQ\nqF8aEfvLa+6MiFiMNytJmp/5HDmcBDZl5oXAauCmiLgQ2AzszcxVwN7yHOAqYFV5bATuhlaYAFuA\ny4HLgC3TgVLGvL/xurXdvzVJUqfmDIfMPJqZ3yzL/wU8A5wHrAO2l2HbgWvK8jrg3mx5CFgaEcuB\nK4E9mXk8M18E9gBry7pfycyHMjOBexvbkiQNwIKuOUTESuBtwMPAWGYeLat+AIyV5fOA5xsvO1xq\np6ofblOXJA3IkvkOjIizgS8CH8rMV5qXBTIzIyIXob+ZPWykdaqKsbExJicnF3vKytiZsOmikwAD\nmb9TJ06cGKl+p9l3f41i36PYMwx/3/MKh4h4Ha1guC8zv1TKL0TE8sw8Wk4NHSv1I8D5jZevKLUj\nwMSM+mSpr2gzvpKZW4GtAOPj4zkxMdFu2KK6674d3LG/tdsOXd//+Ts1OTnJIPZXt+y7v0ax71Hs\nGYa/7/ncrRTAZ4FnMvOTjVU7gek7jjYAOxr19eWupdXAy+X0025gTUQsKxei1wC7y7pXImJ1mWt9\nY1uSpAGYz5HD7wJ/COyPiMdL7c+B24EHIuJG4DngvWXdLuBqYAr4CXADQGYej4jbgEfLuI9m5vGy\n/AHgc8CZwNfKQ5I0IHOGQ2Z+A5jt9w7e1WZ8AjfNsq1twLY29X3AW+fqRZLUH/6GtCSpYjhIkiqG\ngySpYjhIkiqGgySpYjhIkiqGgySpYjhIkiqGgySpYjhIkiqGgySpYjhIkiqGgySpYjhIkiqGgySp\nYjhIkiqGgySpYjhIkiqGgySpYjhIkiqGgySpYjhIkiqGgySpYjhIkiqGgySpYjhIkiqGgySpYjhI\nkiqGgySpYjhIkiqGgySpYjhIkiqGgySpYjhIkiqGgySpYjhIkiqGgySpYjhIkiqGgySpMmc4RMS2\niDgWEU82ardGxJGIeLw8rm6suyUipiLiQERc2aivLbWpiNjcqF8QEQ+X+hci4vRevkFJ0sLN58jh\nc8DaNvW/zcyLy2MXQERcCFwL/FZ5zT9ExGkRcRrwKeAq4ELgujIW4BNlW78BvAjc2M0bkiR1b85w\nyMyvA8fnub11wP2Z+d+Z+X1gCrisPKYy89nM/B/gfmBdRATwe8C/ltdvB65Z4HuQJPXYki5ee3NE\nrAf2AZsy80XgPOChxpjDpQbw/Iz65cCbgJcy82Sb8ZWI2AhsBBgbG2NycrKL9jszdiZsuqjV7iDm\n79SJEydGqt9p9t1fo9j3KPYMw993p+FwN3AbkOXrHcD7etXUbDJzK7AVYHx8PCcmJhZ7yspd9+3g\njv2t3Xbo+v7P36nJyUkGsb+6Zd/9NYp9j2LPMPx9dxQOmfnC9HJEfAb4Snl6BDi/MXRFqTFL/UfA\n0ohYUo4emuMlSQPS0a2sEbG88fTdwPSdTDuBayPijIi4AFgFPAI8CqwqdyadTuui9c7MTOBB4D3l\n9RuAHZ30JEnqnTmPHCLi88AEcG5EHAa2ABMRcTGt00qHgD8GyMynIuIB4GngJHBTZv6sbOdmYDdw\nGrAtM58qU3wYuD8iPgZ8C/hsz96dJKkjc4ZDZl7XpjzrN/DM/Djw8Tb1XcCuNvVnad3NJEkaEv6G\ntCSpYjhIkiqGgySpYjhIkiqGgySpYjhIkiqGgySpYjhIkiqGgySpYjhIkiqGgySpYjhIkiqGgySp\nYjhIkiqGgySpYjhIkiqGgySpYjhIkiqGgySpYjhIkiqGgySpYjhIkiqGgySpYjhIkiqGgySpYjhI\n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\nY7/mAAAAAElFTkSuQmCC\n",
+      "text/plain": [
+       "<matplotlib.figure.figure at="" 0x7f453c7dec88="">"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "print(medical.query(\"HOTHVAL&lt;0\").shape)\n",
+    "medical.HOTHVAL.hist(bins=100)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "It looks as if the problem is not profund. We can replace negative values with zero in these variables."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "medical.loc[medical.HEARNVAL&lt;0, \"HEARNVAL\"]=0\n",
+    "medical.loc[medical.HOTHVAL&lt;0, \"HOTHVAL\"]=0"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Lets look ath the number of relatives in the house hold. It looks as if there are vew cases where the value is greater than 5. Lets change those outliers to our new max of 5."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "3     9084\n",
+       "2     7700\n",
+       "1     7399\n",
+       "0     4291\n",
+       "4     4194\n",
+       "5     1561\n",
+       "6      508\n",
+       "7      193\n",
+       "8       86\n",
+       "9       30\n",
+       "10      16\n",
+       "11       6\n",
+       "14       3\n",
+       "12       1\n",
+       "Name: URELATE, dtype: int64"
+      ]
+     },
+     "execution_count": 15,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "medical.URELATE.value_counts()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "3    9084\n",
+       "2    7700\n",
+       "1    7399\n",
+       "0    4291\n",
+       "4    4194\n",
+       "5    2404\n",
+       "Name: URELATE, dtype: int64"
+      ]
+     },
+     "execution_count": 16,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "medical.loc[medical.URELATE&gt;5, \"URELATE\"]=5\n",
+    "medical.URELATE.value_counts()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Finally we can save our data set in a binary format so that we save all the changes we have made and keep the information about the types."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "medical.to_pickle(\"data/medical.p\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Exercise 1.1.\n",
+    "import data from the 'titanic.csv' file and check its structure.\n",
+    "* passenger_id – Unique passenger id\n",
+    "* pclass – Ticket class (1 = 1st, 2 = 2nd, 3 = 3rd)\n",
+    "* survived – Survival (0 = No, 1 = Yes)\n",
+    "* name – Name and SUrname\n",
+    "* sex – Sex (0 = Male, 1 = Female)\n",
+    "* age – Age in years\n",
+    "* sibsp – # of siblings / spouses aboard the Titanic\n",
+    "* parch – # of parents / children aboard the Titanic\n",
+    "* ticket – Ticket number\n",
+    "* fare – Passenger fare\n",
+    "* cabin – Cabin number\n",
+    "* embarked – Port of Embarkation (C = Cherbourg, Q = Queenstown, S = Southampton)\n",
+    "* boat – Lifeboat (if survived)\n",
+    "* body – Body number (if did not survive and body was recovered)\n",
+    "* home.dest – Home/Destination"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Exercise 1.2\n",
+    "In the titanic dataset convert columns with qualitative variables\n",
+    "to factors (sex, embarked, survived) or ordered factor (pclass) -\n",
+    "defining the appropriate levels and, if needed, order of values.\n",
+    "Please code the levels as:\n",
+    "- embarked respectively: Cherbourg, Queenstown, Southampton\n",
+    "- sex - Female, Male\n",
+    "- survived - Yes, No\n",
+    "- pclass - 1st &lt;2nd &lt;3rd"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
+</matplotlib.figure.figure></matplotlib.axes._subplots.axessubplot></matplotlib.figure.figure></matplotlib.axes._subplots.axessubplot><div id="lbdictex_find_popup" class="lbexpopup hidden" style="position: absolute; top: 0px; left: 0px;"><div class="lbexpopup_top"><h2 class="fl popup_title">&nbsp;</h2><ul><li><a class="close_main popup_close" href="https://moodle.wne.uw.edu.pl/pluginfile.php/130215/mod_resource/content/1/01%20-%20Data%20preparation.ipynb#">&nbsp;</a></li></ul><div class="clr"></div></div><div class="popup_details"></div><div class="popup_powered">abc</div></div><div id="lbdictex_ask_mark" class="hidden" style="position: absolute; top: 0px; left: 0px;"><a class="lbdictex_ask_select" href="https://moodle.wne.uw.edu.pl/pluginfile.php/130215/mod_resource/content/1/01%20-%20Data%20preparation.ipynb#">&nbsp;</a></div></body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
